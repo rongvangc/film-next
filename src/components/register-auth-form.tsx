@@ -3,8 +3,8 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { cn } from "@/lib/utils";
+import useUserStore from "@/stores/user";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
 import { ChangeEvent, SyntheticEvent, useState } from "react";
 import { AlertError } from "./alert";
 
@@ -14,24 +14,34 @@ export function RegisterAuthForm({
   className,
   ...props
 }: RegisterAuthFormProps) {
-  const { replace } = useRouter();
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [username, setUsername] = useState<string>("");
+  const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [displayName, setDisplayName] = useState<string>("");
   const [filePreview, setFilePreview] = useState<string>("");
-  const [errorMessage, setErrorMessage] = useState<string>("");
-  const [fileUpload, setFileUpload] = useState<File>();
+  const [file, setFile] = useState<File | undefined>(undefined);
+  const { errAuth, handleRegister } = useUserStore();
 
   const handleUploadImage = (e: ChangeEvent<HTMLInputElement>) => {
     const file = e.target?.files?.[0];
-    setFileUpload(file);
+    setFile(file);
     file && setFilePreview(URL.createObjectURL(file));
   };
 
   const onSubmit = async (e: SyntheticEvent) => {
     e.preventDefault();
     setIsLoading(true);
+
+    handleRegister({
+      email,
+      password,
+      displayName,
+      file: file as Blob | Uint8Array | ArrayBuffer,
+    });
+
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 3000);
   };
 
   return (
@@ -47,6 +57,7 @@ export function RegisterAuthForm({
               placeholder="Display name"
               type="displayname"
               autoCapitalize="none"
+              required
               autoCorrect="off"
               value={displayName}
               disabled={isLoading}
@@ -55,16 +66,17 @@ export function RegisterAuthForm({
           </div>
           <div className="grid gap-1">
             <Label className="sr-only" htmlFor="email">
-              Username
+              Email
             </Label>
             <Input
-              id="username"
+              id="email"
               placeholder="Username"
               autoCapitalize="none"
               autoCorrect="off"
-              value={username}
+              required
+              value={email}
               disabled={isLoading}
-              onChange={(e) => setUsername(e.target.value)}
+              onChange={(e) => setEmail(e.target.value)}
             />
           </div>
 
@@ -79,6 +91,7 @@ export function RegisterAuthForm({
               autoCapitalize="none"
               autoComplete="password"
               autoCorrect="off"
+              required
               value={password}
               disabled={isLoading}
               onChange={(e) => setPassword(e.target.value)}
@@ -107,7 +120,7 @@ export function RegisterAuthForm({
             Sign In with Email
           </Button>
 
-          {errorMessage && <AlertError />}
+          {errAuth && <AlertError />}
         </div>
       </form>
     </div>

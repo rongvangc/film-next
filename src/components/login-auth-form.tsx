@@ -3,39 +3,24 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { cn } from "@/lib/utils";
-// import { signIn } from "@/services/movie";
-import { useRouter } from "next/navigation";
+import useUserStore from "@/stores/user";
 import { HTMLAttributes, useState } from "react";
 import { AlertError } from "./alert";
-import { setToken } from "@/lib/cookieUtils";
 
 interface LoginAuthFormProps extends HTMLAttributes<HTMLDivElement> {}
 
 export function LoginAuthForm({ className, ...props }: LoginAuthFormProps) {
-  const { replace } = useRouter();
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [username, setUsername] = useState<string>("");
+  const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
-  const [errorMessage, setErrorMessage] = useState<string>("");
+
+  const { errAuth, handleSignIn } = useUserStore();
 
   async function onSubmit(event: React.SyntheticEvent) {
     event.preventDefault();
     setIsLoading(true);
 
-    // const { data, message } = await signIn({
-    //   username,
-    //   password,
-    // });
-
-    // if (message) {
-    //   setErrorMessage(message);
-    // }
-
-    // if (data?._id) {
-    //   setErrorMessage("");
-    //   setToken(data?.access_token);
-    //   replace("/chat");
-    // }
+    handleSignIn({ email, password });
 
     setTimeout(() => {
       setIsLoading(false);
@@ -51,13 +36,15 @@ export function LoginAuthForm({ className, ...props }: LoginAuthFormProps) {
               Email
             </Label>
             <Input
-              id="username"
-              placeholder="Username"
-              type="username"
+              id="email"
+              placeholder="name@example.com"
+              type="email"
               autoCapitalize="none"
+              autoComplete="email"
               autoCorrect="off"
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
+              required
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
               disabled={isLoading}
             />
           </div>
@@ -70,6 +57,7 @@ export function LoginAuthForm({ className, ...props }: LoginAuthFormProps) {
               placeholder="Password"
               type="password"
               autoCapitalize="none"
+              required
               autoCorrect="off"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
@@ -83,7 +71,7 @@ export function LoginAuthForm({ className, ...props }: LoginAuthFormProps) {
             Sign In
           </Button>
 
-          {errorMessage && <AlertError />}
+          {errAuth && <AlertError />}
         </div>
       </form>
     </div>

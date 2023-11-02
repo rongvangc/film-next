@@ -141,11 +141,11 @@ export const MovieDetail = ({ movie, className }: MovieDetailProps) => {
 
         <div className="mb-2">
           <h3 className="text-lg font-bold mb-4">Production Companies</h3>
-          <div className="grid grid-cols-1 md:grid-cols-3">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-1">
             {movie?.production_companies?.map((company) => (
               <div
                 key={company?.id}
-                className="flex flex-col justify-center items-center text-center"
+                className="flex flex-col justify-center items-center text-center p-2 border-neutral-200 border-spacing-1 border border-dashed"
               >
                 <div className="h-32 w-32 relative">
                   <Image

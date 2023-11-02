@@ -4,6 +4,7 @@ import { ThemeProvider } from "@/components/theme-provider";
 import { cn } from "@/lib/utils";
 import type { Metadata } from "next";
 import { Inter as FontSans } from "next/font/google";
+import { cookies } from "next/headers";
 import "./globals.css";
 
 export const fontSans = FontSans({
@@ -12,7 +13,7 @@ export const fontSans = FontSans({
 });
 
 export const metadata: Metadata = {
-  title: "Movie App",
+  title: "Moviee",
 };
 
 export default function RootLayout({
@@ -20,6 +21,32 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
+  const isLoggedIn: boolean = cookies().has("session");
+
+  if (!isLoggedIn) {
+    return (
+      <html lang="en" suppressHydrationWarning>
+        <head />
+
+        <body
+          className={cn(
+            "min-h-screen bg-background font-sans antialiased",
+            fontSans.variable
+          )}
+        >
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="system"
+            enableSystem
+            disableTransitionOnChange
+          >
+            {children}
+          </ThemeProvider>
+        </body>
+      </html>
+    );
+  }
+
   return (
     <html lang="en" suppressHydrationWarning>
       <head />

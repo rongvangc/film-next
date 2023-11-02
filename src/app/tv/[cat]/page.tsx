@@ -1,6 +1,8 @@
 import { Content } from "@/components/content";
+import { Loader } from "@/components/loader";
 import { mappingHeading } from "@/lib/common";
 import { getTvs } from "@/services/tv";
+import { Suspense } from "react";
 
 export default async function TvPage({
   params,
@@ -15,5 +17,9 @@ export default async function TvPage({
   const heading = mappingHeading(cat);
   const tvs: MovieList = await getTvs(cat, page);
 
-  return <Content heading={heading} type="tv" movies={tvs} page={+page} />;
+  return (
+    <Suspense fallback={<Loader />}>
+      <Content heading={heading} type="tv" movies={tvs} page={+page} />;
+    </Suspense>
+  );
 }

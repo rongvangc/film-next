@@ -1,45 +1,49 @@
-import { TOKEN_KEY } from "@/lib/cookieUtils";
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
-export const PUBLIC_PATH: string[] = ["/", "/register-success"];
+export const PUBLIC_PATH: string[] = ["/login", "/register-success"];
 
-export const config = {
-  matcher: [
-    /*
-     * Match all request paths except for the ones starting with:
-     * - api (API routes)
-     * - _next/static (static files)
-     * - _next/image (image optimization files)
-     * - favicon.ico (favicon file)
-     */
-    "/((?!api|_next/static|_next/image|favicon.ico).*)",
-  ],
-};
+export async function middleware(request: NextRequest, response: NextResponse) {
+  const session = request.cookies.get("session");
 
-export function middleware(request: NextRequest) {
-  const cookie = request.cookies.get(TOKEN_KEY);
+  const pathname = request.nextUrl.pathname;
 
-  const path = request.nextUrl.pathname;
-  const token = cookie?.value || "";
+  const checkPublicPath = PUBLIC_PATH.some((url: string) =>
+    url.includes(pathname)
+  );
 
-  const checkPublicPath = PUBLIC_PATH.some((url: string) => url.includes(path));
+  //Return to /login if don't have a session
+  if (!session) {
+    return NextResponse.redirect(new URL("/login", request.url));
+  }
 
-  // if (!token && !checkPublicPath) {
-  //   return NextResponse.redirect(new URL("/", request.url));
+  //Return to /discover/movie if have a session & match with public path
+  // if (session && checkPublicPath) {
+  //   return NextResponse.redirect(new URL("/discover/movie", request.url));
   // }
 
-  // if (token && checkPublicPath) {
-  //   return NextResponse.redirect(new URL("/chat", request.url));
-  // }
-
-  const requestHeaders = new Headers(request.headers);
-  const response = NextResponse.next({
-    request: {
-      // New request headers
-      headers: requestHeaders,
+  //Call the authentication endpoint
+  const responseAPI = await fetch(`${request.nextUrl.origin}/api/login`, {
+    headers: {
+      Cookie: `session=${session?.value}`,
     },
   });
 
-  return response;
+  //Return to /login if token is not authorized
+  if (responseAPI.status !== 200) {
+    return NextResponse.redirect(new URL("/login", request.url));
+  }
+
+  return NextResponse.next();
 }
+
+//Add your protected routes
+export const config = {
+  matcher: [
+    "/movie/:path*",
+    "/tv/:path*",
+    "/detail/:path*",
+    "/tv-detail/:path*",
+    "/discover/:path*",
+  ],
+};

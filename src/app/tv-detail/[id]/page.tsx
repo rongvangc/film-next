@@ -1,5 +1,7 @@
+import { Loader } from "@/components/loader";
 import { TvDetail } from "@/components/tv-detail";
 import { getTvsDetail } from "@/services/tv";
+import { Suspense } from "react";
 
 export default async function TvDetailPage({
   params,
@@ -12,5 +14,9 @@ export default async function TvDetailPage({
 
   const tvDetail = await getTvsDetail(+id);
 
-  return <TvDetail tvData={tvDetail} />;
+  return (
+    <Suspense fallback={<Loader />}>
+      <TvDetail tvData={tvDetail} />;
+    </Suspense>
+  );
 }

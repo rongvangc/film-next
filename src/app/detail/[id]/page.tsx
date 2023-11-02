@@ -1,5 +1,7 @@
+import { Loader } from "@/components/loader";
 import { MovieDetail } from "@/components/movie-detail";
 import { getMoviesDetail } from "@/services/movie";
+import { Suspense } from "react";
 
 export default async function DetailPage({
   params,
@@ -12,5 +14,9 @@ export default async function DetailPage({
 
   const movieDetail = await getMoviesDetail(+id);
 
-  return <MovieDetail movie={movieDetail} />;
+  return (
+    <Suspense fallback={<Loader />}>
+      <MovieDetail movie={movieDetail} />;
+    </Suspense>
+  );
 }
