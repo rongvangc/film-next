@@ -14,17 +14,13 @@ export function LoginAuthForm({ className, ...props }: LoginAuthFormProps) {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
 
-  const { errAuth, handleSignIn } = useUserStore();
+  const { user, errAuth, handleSignIn } = useUserStore();
 
   async function onSubmit(event: React.SyntheticEvent) {
     event.preventDefault();
     setIsLoading(true);
 
     handleSignIn({ email, password });
-
-    setTimeout(() => {
-      setIsLoading(false);
-    }, 3000);
   }
 
   return (
@@ -45,7 +41,7 @@ export function LoginAuthForm({ className, ...props }: LoginAuthFormProps) {
               required
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              disabled={isLoading}
+              disabled={!!user}
             />
           </div>
           <div className="grid gap-1">
@@ -61,13 +57,11 @@ export function LoginAuthForm({ className, ...props }: LoginAuthFormProps) {
               autoCorrect="off"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              disabled={isLoading}
+              disabled={!!user}
             />
           </div>
-          <Button disabled={isLoading}>
-            {isLoading && (
-              <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
-            )}
+          <Button disabled={!!user}>
+            {!!user && <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />}
             Sign In
           </Button>
 

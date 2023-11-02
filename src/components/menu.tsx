@@ -7,13 +7,17 @@ import useUserStore, { UserType } from "@/stores/user";
 import { onAuthStateChanged } from "firebase/auth";
 import { Columns, LogOut, Popcorn } from "lucide-react";
 import Link from "next/link";
-import { useEffect } from "react";
+import { useEffect, useLayoutEffect } from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import { Button } from "./ui/button";
+import { usePathname, useRouter } from "next/navigation";
+import { checkPublicPath } from "@/lib/common";
 
 export function Menu() {
   const { setShowMobileDraw } = useAppStore();
   const { user, setUser, handleSignOut } = useUserStore();
+  const { push } = useRouter();
+  const pathname = usePathname();
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
@@ -26,6 +30,12 @@ export function Menu() {
 
     return () => unsubscribe();
   }, [setUser]);
+
+  useLayoutEffect(() => {
+    if (user && checkPublicPath(pathname)) {
+      push("/");
+    }
+  }, [pathname, push, user]);
 
   return (
     <div className="rounded-none flex justify-between border-b border-none px-2 lg:px-4 relative">

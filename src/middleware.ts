@@ -1,16 +1,10 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
-export const PUBLIC_PATH: string[] = ["/login", "/register-success"];
-
 export async function middleware(request: NextRequest, response: NextResponse) {
   const session = request.cookies.get("session");
 
   const pathname = request.nextUrl.pathname;
-
-  const checkPublicPath = PUBLIC_PATH.some((url: string) =>
-    url.includes(pathname)
-  );
 
   //Return to /login if don't have a session
   if (!session) {
@@ -45,5 +39,6 @@ export const config = {
     "/detail/:path*",
     "/tv-detail/:path*",
     "/discover/:path*",
+    "/",
   ],
 };

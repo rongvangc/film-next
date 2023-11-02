@@ -7,13 +7,13 @@ export const mappingHeading = (keyUrl: string) => {
     case "top_rated":
       return "Top Rated";
     case "upcoming":
-      return "Upcomming";
+      return "Upcoming";
     case "movie":
       return "Discover Movies";
     case "airing_today":
       return "Airing Today";
     default:
-      return "Unkown heading";
+      return "Unknow heading";
   }
 };
 
@@ -44,3 +44,8 @@ export const rankByPoint = (point: number) => {
   }
   return "!border-red-500";
 };
+
+export const PUBLIC_PATH: string[] = ["/login", "/register-success"];
+
+export const checkPublicPath = (pathname: string) =>
+  PUBLIC_PATH.some((url: string) => url.includes(pathname));

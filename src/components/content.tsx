@@ -58,7 +58,6 @@ export const Content = ({ movies, heading, page, type }: ContentType) => {
         containerClassName={"pagination"}
         pageClassName={"page-item"}
         activeClassName={"active"}
-        disableInitialCallback
         onPageChange={handleChangePage}
         pageRangeDisplayed={2}
         forcePage={page - 1}

@@ -11,7 +11,7 @@ export default function RegisterSuccessLayout({
   children: React.ReactNode;
 }) {
   return (
-    <section lang="en" suppressHydrationWarning>
+    <section className="container" lang="en" suppressHydrationWarning>
       {children}
     </section>
   );
