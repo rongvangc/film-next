@@ -16,6 +16,7 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { Search } from "./search";
 
 interface SidebarProps extends React.HTMLAttributes<HTMLDivElement> {}
 
@@ -26,27 +27,32 @@ export function Sidebar({ className }: SidebarProps) {
   return (
     <div
       className={cn(
-        "col-span-4 bg-white rounded-xl h-full w-full p-4 left-0 top-0 md:col-span-1 absolute md:relative activeDraw md:visible md:translate-x-0",
+        "col-span-4 bg-white rounded-xl h-full w-full py-0 md:p-4 left-0 top-0 md:col-span-1 absolute md:relative z-20 activeDraw md:visible md:translate-x-0",
         showMobileDraw ? "active" : ""
       )}
     >
       <div className={cn("pb-12", className)}>
         <div className="space-y-4">
           <div className="px-3 py-2">
+            <i
+              className="cursor-pointer md:hidden float-right mb-2"
+              onClick={() => setShowMobileDraw(false)}
+            >
+              <Columns />
+            </i>
+            <div className="space-y-1 mb-2">
+              <Search />
+            </div>
             <h2 className="mb-2 px-4 text-lg font-semibold tracking-tight flex items-center justify-between">
               Discover
-              <i
-                className="cursor-pointer md:hidden"
-                onClick={() => setShowMobileDraw(false)}
-              >
-                <Columns className="mr-2 h-5 w-5" />
-              </i>
             </h2>
             <div className="space-y-1">
               <Link href="/discover/movie">
                 <Button
                   variant={
-                    pathname === "/discover/movie" ? "secondary" : "ghost"
+                    pathname === "/discover/movie" || pathname === "/"
+                      ? "secondary"
+                      : "ghost"
                   }
                   onClick={() => setShowMobileDraw(false)}
                   className="w-full justify-start"

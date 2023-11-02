@@ -91,6 +91,13 @@ body {
   overflow: hidden;
 }
 
+.truncate-3-line {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
 .loader {
   width: 48px;
   height: 48px;
@@ -202,4 +209,24 @@ body {
   visibility: visible;
   transform: translateX(0);
   z-index: 10;
+}
+
+/* width */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #f1f1f1; 
+}
+ 
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #888; 
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #555; 
 }

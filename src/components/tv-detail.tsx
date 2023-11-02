@@ -10,6 +10,7 @@ import {
 import Image from "next/image";
 import { Separator } from "./ui/separator";
 import UnknownSVG from "@/assets/images/unknown.svg";
+import { BackIcon } from "./back-icon";
 
 type TvDetailProps = {
   tvData: TvDetail;
@@ -19,7 +20,8 @@ export const TvDetail = ({ tvData, className }: TvDetailProps) => {
   const heading = tvData?.name || tvData?.original_name;
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-3">
+    <div className="grid grid-cols-1 md:grid-cols-3 relative">
+      <BackIcon />
       <div
         className={cn(
           "mb-3 rounded-md min-w-96 h-min relative col-span-2 md:col-span-1",

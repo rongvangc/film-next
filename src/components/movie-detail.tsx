@@ -1,6 +1,7 @@
 import { mergeUrlImg, randomColorTailWind, rankByPoint } from "@/lib/common";
 import { cn } from "@/lib/utils";
 import {
+  ArrowBigLeft,
   BarChart2,
   BookA,
   CalendarRange,
@@ -10,6 +11,7 @@ import {
 import Image from "next/image";
 import { Separator } from "./ui/separator";
 import UnknownSVG from "@/assets/images/unknown.svg";
+import { BackIcon } from "./back-icon";
 
 type MovieDetailProps = {
   movie: MovieDetail;
@@ -20,6 +22,7 @@ export const MovieDetail = ({ movie, className }: MovieDetailProps) => {
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-3 relative">
+      <BackIcon />
       <div
         className={cn(
           "mb-3 rounded-md min-w-96 h-min relative col-span-1",

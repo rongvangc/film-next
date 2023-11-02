@@ -28,7 +28,7 @@ export function Menu() {
   }, [setUser]);
 
   return (
-    <div className="rounded-none flex justify-between border-b border-none px-2 py-2 lg:px-4 relative">
+    <div className="rounded-none flex justify-between border-b border-none px-2 lg:px-4 relative">
       <div className="flex items-center gap-2 cursor-pointer md:justify-start justify-center">
         <i
           className="md:hidden absolute left-4"
@@ -37,7 +37,7 @@ export function Menu() {
           <Columns />
         </i>
         <Link href="/discover/movie">
-          <div className="flex items-center gap-2 cursor-pointer">
+          <div className="hidden md:flex items-center gap-2 cursor-pointer">
             <Popcorn className="text" />
             <p className="font-medium">Moviee</p>
           </div>
