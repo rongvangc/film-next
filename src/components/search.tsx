@@ -41,6 +41,20 @@ export const Search = () => {
     setShowMobileDraw(false);
   };
 
+  const handleCloseSearch = (open: boolean) => {
+    setOpen(open);
+    if (!open) {
+      setSearchValue("");
+      setSearchData({
+        page: 0,
+        results: [],
+        total_pages: 0,
+        total_results: 0,
+      });
+      prevDebouncedValue.current = null;
+    }
+  };
+
   const searchMovieApi = useCallback(async (keyword: string, page: number) => {
     try {
       const searchData = await searchMovie(keyword, page);
@@ -140,7 +154,7 @@ export const Search = () => {
           <span className="text-xs">⌘</span>F
         </kbd>
       </Button>
-      <Dialog open={open} onOpenChange={setOpen}>
+      <Dialog open={open} onOpenChange={handleCloseSearch}>
         <DialogContent className="gap-0 p-0 outline-none">
           <DialogHeader className="px-4 pb-4 pt-5">
             <DialogTitle>Search your film</DialogTitle>

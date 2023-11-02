@@ -10,15 +10,14 @@ import { AlertError } from "./alert";
 interface LoginAuthFormProps extends HTMLAttributes<HTMLDivElement> {}
 
 export function LoginAuthForm({ className, ...props }: LoginAuthFormProps) {
-  const [isLoading, setIsLoading] = useState<boolean>(false);
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
 
-  const { user, errAuth, handleSignIn } = useUserStore();
+  const { loading, errAuth, handleSignIn, setLoaidng } = useUserStore();
 
   async function onSubmit(event: React.SyntheticEvent) {
     event.preventDefault();
-    setIsLoading(true);
+    setLoaidng(true);
 
     handleSignIn({ email, password });
   }
@@ -41,7 +40,7 @@ export function LoginAuthForm({ className, ...props }: LoginAuthFormProps) {
               required
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              disabled={!!user}
+              disabled={loading}
             />
           </div>
           <div className="grid gap-1">
@@ -57,11 +56,11 @@ export function LoginAuthForm({ className, ...props }: LoginAuthFormProps) {
               autoCorrect="off"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              disabled={!!user}
+              disabled={loading}
             />
           </div>
-          <Button disabled={!!user}>
-            {!!user && <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />}
+          <Button disabled={loading}>
+            {loading && <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />}
             Sign In
           </Button>
 

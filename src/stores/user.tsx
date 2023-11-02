@@ -35,6 +35,7 @@ interface UserState {
   loading: boolean;
   setUser: (user: UserType) => void;
   setAuthErr: (data: boolean) => void;
+  setLoaidng: (data: boolean) => void;
   handleSignIn: (data: LoginType) => void;
   handleRegister: (data: RegisterType) => void;
   handleSignOut: () => void;
@@ -48,6 +49,11 @@ const useUserStore = create<UserState>((set) => ({
     set((state) => ({
       ...state,
       errAuth: data,
+    })),
+  setLoaidng: (data) =>
+    set((state) => ({
+      ...state,
+      loading: data,
     })),
   setUser: (user: UserType) => set(() => ({ user })),
   handleSignOut: async () => {
